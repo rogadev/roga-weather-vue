@@ -1,9 +1,17 @@
 <script setup>
-//
+import TodaysForecast from "./components/TodaysForecast.vue";
+import WeekForecast from "./components/WeekForecast.vue";
 </script>
 
 <template>
-  <div>Welcome</div>
+  <header>
+    <h1>Current Local Forecast</h1>
+    <p>Developed by Ryan Roga</p>
+  </header>
+  <main>
+    <TodaysForecast />
+    <WeekForecast />
+  </main>
 </template>
 
 <style>
