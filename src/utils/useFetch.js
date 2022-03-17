@@ -13,6 +13,7 @@ export const useFetch = (url, config = {}) => {
 				url,
 				...config,
 			});
+			response.value = result.data;
 		} catch (e) {
 			error.value = e;
 		} finally {
@@ -20,7 +21,7 @@ export const useFetch = (url, config = {}) => {
 		}
 	};
 	!config.skip && fetch();
-	return { response, error, loading, fetch };
+	return { response, error, data, loading, fetch };
 };
 
 const cacheMap = reactive(new Map());
@@ -42,4 +43,6 @@ export const useFetchCache = (key, url, config) => {
 
 	const response = computed(() => cacheMap.get(key));
 	const data = computed(() => response.value?.data);
+
+	return { ...info, fetch, data, response, clear };
 };
