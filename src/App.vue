@@ -40,8 +40,9 @@ const clearError = () => {
       <WeekForecast />
       <!-- fallback/loading state -->
       <template #fallback>
-        <Loading... />
+        <Loading />
       </template>
+      <!-- Display Error on errorCaptured flag -->
       <div class="error" v-if="errorCaptured">{{ error }}</div>
     </Suspense>
   </main>
