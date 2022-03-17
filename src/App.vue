@@ -1,6 +1,30 @@
 <script setup>
 import TodaysForecast from "./components/TodaysForecast.vue";
 import WeekForecast from "./components/WeekForecast.vue";
+import ChangeLocation from "./components/ChangeLocation.vue";
+import Loading from "./components/Loading.vue";
+
+import { ref, onErrorCaptured } from "vue";
+
+const error = ref(null);
+const errorCaptured = ref(false);
+
+/**
+ * Vue function that captures any errors that occured in async functions, sets the error flag to true, and sets our error message to display in the UI. Also console errors the error.
+ */
+onErrorCaptured((e) => {
+  console.error(e);
+  error.value = e;
+  errorCaptured.value = true;
+});
+
+/**
+ * Clears the error message and resets the errorCaptured flag.
+ */
+const clearError = () => {
+  error.value = null;
+  errorCaptured.value = false;
+};
 </script>
 
 <template>
@@ -9,8 +33,17 @@ import WeekForecast from "./components/WeekForecast.vue";
     <p>Developed by Ryan Roga</p>
   </header>
   <main>
-    <TodaysForecast />
-    <WeekForecast />
+    <ChangeLocation />
+    <Suspense>
+      <!-- nested async dependencies -->
+      <TodaysForecast />
+      <WeekForecast />
+      <!-- fallback/loading state -->
+      <template #fallback>
+        <Loading... />
+      </template>
+      <div class="error" v-if="errorCaptured">{{ error }}</div>
+    </Suspense>
   </main>
 </template>
 
