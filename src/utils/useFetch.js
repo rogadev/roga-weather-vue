@@ -30,32 +30,34 @@ export const useFetch = (url, config = {}) => {
 const cacheMap = reactive(new Map());
 
 export const useFetchCache = (key, url, config) => {
-	console.log('useFetchCache called', key);
+	console.log('useFetchCache called - key:', key);
 	const info = useFetch(url, { skip: true, ...config });
 
 	const update = () => {
-		console.log('update called');
+		console.log('fetchCache - update called');
 		cacheMap.set(key, info.response.value);
 	};
 	const clear = () => {
-		console.log('clear called');
+		console.log('fetchCache - clear called');
 		cacheMap.set(key, undefined);
 	};
 
 	const fetch = async () => {
-		console.log('fetch cache - fetch called');
+		console.log('fetchCache - fetch called');
 		try {
-			console.log('fetch cache - fetching...');
+			console.log('fetchCache - fetching...');
 			await info.fetch();
 			update();
 		} catch (e) {
-			console.error('fetch cache - fetch error', e);
+			console.error('fetchCache - fetch error', e);
 			clear();
 		}
 	};
 
 	const response = computed(() => cacheMap.get(key));
 	const data = computed(() => response.value?.data);
+
+	if (response.value == null) fetch();
 
 	return { ...info, fetch, data, response, clear };
 };
