@@ -9,14 +9,17 @@ export const useFetch = (url, config = {}) => {
 	const fetch = async () => {
 		loading.value = true;
 		try {
+			console.log('fetching...');
 			const result = await axios.request({
 				url,
 				...config,
 			});
 			response.value = result.data;
 		} catch (e) {
+			console.error(e);
 			error.value = e;
 		} finally {
+			console.log('fetching done');
 			loading.value = false;
 		}
 	};
@@ -27,16 +30,26 @@ export const useFetch = (url, config = {}) => {
 const cacheMap = reactive(new Map());
 
 export const useFetchCache = (key, url, config) => {
+	console.log('useFetchCache called', key);
 	const info = useFetch(url, { skip: true, ...config });
 
-	const update = () => cacheMap.set(key, info.response.value);
-	const clear = () => cacheMap.set(key, undefined);
+	const update = () => {
+		console.log('update called');
+		cacheMap.set(key, info.response.value);
+	};
+	const clear = () => {
+		console.log('clear called');
+		cacheMap.set(key, undefined);
+	};
 
 	const fetch = async () => {
+		console.log('fetch cache - fetch called');
 		try {
+			console.log('fetch cache - fetching...');
 			await info.fetch();
 			update();
-		} catch {
+		} catch (e) {
+			console.error('fetch cache - fetch error', e);
 			clear();
 		}
 	};
