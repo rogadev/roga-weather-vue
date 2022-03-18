@@ -4,29 +4,29 @@ import WeekForecast from "./components/WeekForecast.vue";
 import ChangeLocation from "./components/ChangeLocation.vue";
 import Loading from "./components/Loading.vue";
 
-import { ref, onErrorCaptured, computed, watch } from "vue";
+import { ref, onErrorCaptured, computed } from "vue";
 import { useFetch, useFetchCache } from "./utils/useFetch";
 
 const GEO_IP_LOOKUP_API_URL = "https://json.geoiplookup.io/";
 const WEATHER_DBI_API_URL = "https://weatherdbi.herokuapp.com/data/weather/";
 
-const error = ref(null);
-const errorCaptured = ref(false);
+// const error = ref(null);
+// const errorCaptured = ref(false);
 const location = ref(null);
-//const currentConditions = ref(null);
-//const forecast = ref(null);
+const currentConditions = ref(null);
+const forecast = ref(null);
 
 /* Current Hour Ticker */
 const currentHour = ref(Math.floor(new Date().getTime() / 3600000));
 setInterval(() => {
-  const hours = Math.floor(new Date().getTime() / 3600000);
-  if (currentHour.value !== hours) {
-    currentHour.value = hours;
+  const expected = Math.floor(new Date().getTime() / 3600000);
+  if (currentHour.value !== expected) {
+    currentHour.value = expected;
   }
 }, 1000);
 
 /* Get geo location based on ip address */
-const getLocation = useFetch(GEO_IP_LOOKUP_API_URL);
+const getLocation = useFetch(GEO_IP_LOOKUP_API_URL, { skip: true });
 await getLocation.fetch();
 location.value = `${getLocation.response.value.city}, ${getLocation.response.value.region}`;
 
@@ -42,19 +42,11 @@ const getWeather = useFetchCache(
   WEATHER_DBI_API_URL + location.value
 );
 await getWeather.fetch();
-console.log("get weather", ...getWeather.response.value);
-const currentConditions = computed(() => ({
+console.log("get weather", { ...getWeather.response.value });
+console.log({
   ...getWeather.response.value.currentConditions,
-}));
-const forecast = computed(() => [...getWeather.response.value.next_days]);
-
-// NOT WORKING - why?
-watch(forecast.value, (forecast) => {
-  console.log("forecast", forecast);
 });
-watch(currentConditions.value, (currentConditions) => {
-  console.log("currentConditions", currentConditions);
-});
+// console.log({ ...getWeather.response.value.next_days });
 
 /**
  * Built-in Vue function that captures any errors that occured in async functions, sets the error flag to true, and sets our error message to display in the UI. Also console errors the error.
@@ -62,7 +54,7 @@ watch(currentConditions.value, (currentConditions) => {
 onErrorCaptured((e) => {
   console.error(e);
   error.value = e;
-  errorCaptured.value = true;
+  //errorCaptured.value = true;
 });
 
 /**
@@ -70,7 +62,7 @@ onErrorCaptured((e) => {
  */
 const clearError = () => {
   error.value = null;
-  errorCaptured.value = false;
+  //errorCaptured.value = false;
 };
 </script>
 
