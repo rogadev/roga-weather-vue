@@ -9,7 +9,6 @@ export const useFetch = (url, config = {}) => {
 	const fetch = async () => {
 		loading.value = true;
 		try {
-			console.log('fetching...');
 			const result = await axios.request({
 				url,
 				...config,
@@ -19,7 +18,6 @@ export const useFetch = (url, config = {}) => {
 			console.error(e);
 			error.value = e;
 		} finally {
-			console.log('fetching done');
 			loading.value = false;
 		}
 	};
@@ -30,34 +28,29 @@ export const useFetch = (url, config = {}) => {
 const cacheMap = reactive(new Map());
 
 export const useFetchCache = (key, url, config) => {
-	console.log('useFetchCache called - key:', key);
-	const info = useFetch(url, { skip: true, ...config });
-
-	const update = () => {
-		console.log('fetchCache - update called');
-		cacheMap.set(key, info.response.value);
-	};
-	const clear = () => {
-		console.log('fetchCache - clear called');
-		cacheMap.set(key, undefined);
-	};
-
+	const data = ref(null);
+	const response = ref(null);
+	const error = ref(null);
+	const loading = ref(false);
 	const fetch = async () => {
-		console.log('fetchCache - fetch called');
+		loading.value = true;
 		try {
-			console.log('fetchCache - fetching...');
-			await info.fetch();
-			update();
+			const result = await axios.request({
+				url,
+				...config,
+			});
+			response.value = result.data;
 		} catch (e) {
-			console.error('fetchCache - fetch error', e);
-			clear();
+			console.error(e);
+			error.value = e;
+		} finally {
+			loading.value = false;
 		}
 	};
-
-	const response = computed(() => cacheMap.get(key));
-	const data = computed(() => response.value?.data);
-
-	if (response.value == null) fetch();
-
-	return { ...info, fetch, data, response, clear };
+	if (cacheMap.has(key)) {
+		data.value = cacheMap.get(key);
+	} else {
+		fetch();
+	}
+	return { response, error, data, loading, fetch };
 };
