@@ -1,29 +1,26 @@
-import { ref, computed } from 'vue';
-
 import { useFetch } from '../composables/useFetch';
-import { useSlug } from '../composables/useSlug';
-
 import { store } from '../store';
 
-const WEATHER_DBI_API_URL = 'https://weatherdbi.herokuapp.com/data/weather/';
-
 const fetchWeather = async (key = null) => {
+	console.log('Fetching weather...');
+	const WEATHER_DBI_API_URL = 'https://weatherdbi.herokuapp.com/data/weather/';
 	const goFetch = async () => {
-		console.log('Fetching weather data...');
-
+		store.state.loading = true;
+		const config = key ? { skip: true, key: key } : { skip: true };
 		const getWeather = useFetch(
 			WEATHER_DBI_API_URL + store.state.locationSlug,
-			{
-				skip: true,
-			}
+			config
 		);
 		await getWeather.fetch();
-		const weather = { ...getWeather.response.value };
+		// Update State
+		store.state.currentConditions = { ...getWeather.data.currentConditions };
+		store.state.weekForecast = { ...getWeather.data.next_days };
+		store.state.loading = false;
+
+		console.log('Weather fetched.');
 	};
 
-	if (key) {
-	} else {
-	}
+	goFetch();
 };
 
 export { fetchWeather };
