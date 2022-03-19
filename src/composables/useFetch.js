@@ -26,6 +26,7 @@ export const useFetch = (url, config = {}) => {
 		// Our fetch logic
 		const goFetch = async () => {
 			try {
+				console.time('Fetch');
 				const result = await axios.request({
 					url,
 					...config,
@@ -36,6 +37,7 @@ export const useFetch = (url, config = {}) => {
 				error.value = e;
 			} finally {
 				loading.value = false;
+				console.timeEnd('Fetch');
 			}
 		};
 
@@ -46,9 +48,11 @@ export const useFetch = (url, config = {}) => {
 		 */
 		if (usingCache) {
 			if (fetchCache.value.has(key.value)) {
-				console.log('Used cache to fetch data.');
+				console.time('Grabbed from cache in');
+				console.log('Using cache to fetch data.');
 				data.value = fetchCache.value.get(key.value);
 				loading.value = false;
+				console.timeEnd('Grabbed from cache in');
 			} else {
 				await goFetch();
 				fetchCache.value.set(key.value, data.value);
