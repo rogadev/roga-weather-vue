@@ -5,5 +5,6 @@ export const store = reactive({
 		todaysForecast: null,
 		weekForecast: null,
 		location: null,
+		locationSlug: null,
 	},
 });
