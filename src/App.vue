@@ -1,5 +1,4 @@
 <script setup>
-import ChangeLocation from "./components/ChangeLocation.vue";
 import Weather from "./components/Weather.vue";
 import Loading from "./components/Loading.vue";
 </script>
@@ -15,7 +14,6 @@ import Loading from "./components/Loading.vue";
     >
   </header>
   <main class="mx-auto w-4/5 p-2">
-    <ChangeLocation />
     <Suspense>
       <template #default>
         <Weather />
