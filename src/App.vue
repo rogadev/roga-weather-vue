@@ -27,6 +27,7 @@ setInterval(() => {
 }, 1000);
 
 /* Get geo location based on ip address */
+console.log("Fetching location data...");
 const getLocation = useFetch(GEO_IP_LOOKUP_API_URL, { skip: true });
 await getLocation.fetch();
 store.state.location = `${getLocation.response.value.city}+${getLocation.response.value.region}`;
@@ -37,13 +38,21 @@ const key = computed(() => {
 });
 
 /* Get weather initially based on geo location */
-const getWeather = useFetch(WEATHER_DBI_API_URL, {
+console.log("Fetching weather data...");
+const getWeather = useFetch(WEATHER_DBI_API_URL + store.state.location, {
   key: key.value,
   skip: true,
 });
 await getWeather.fetch();
-store.state.todaysForecast = getWeather.response.value.todaysForecast;
-store.state.weekForecast = getWeather.response.value.next_week;
+
+const weather = { ...getWeather.response.value };
+
+store.state.todaysForecast = weather.currentConditions;
+store.state.weekForecast = weather.next_days;
+
+console.log("weather", weather);
+console.log("forecast", store.state.todaysForecast);
+console.log("next days", store.state.weekForecast);
 
 /**
  * Built-in Vue function that captures any errors that occured in async functions, sets the error flag to true, and sets our error message to display in the UI. Also console errors the error.
