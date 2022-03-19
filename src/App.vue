@@ -5,16 +5,14 @@ import ChangeLocation from "./components/ChangeLocation.vue";
 import Loading from "./components/Loading.vue";
 
 import { ref, onErrorCaptured, computed } from "vue";
-import { useFetch, useFetchCache } from "./utils/useFetch";
+import { useFetch } from "./utils/useFetch";
+import { store } from "./store";
 
 const GEO_IP_LOOKUP_API_URL = "https://json.geoiplookup.io/";
 const WEATHER_DBI_API_URL = "https://weatherdbi.herokuapp.com/data/weather/";
 
-// const error = ref(null);
-// const errorCaptured = ref(false);
-const location = ref(null);
-const currentConditions = ref(null);
-const forecast = ref(null);
+const error = ref(null);
+const errorCaptured = ref(false);
 
 /* Current Hour Ticker */
 const currentHour = ref(Math.floor(new Date().getTime() / 3600000));
@@ -28,25 +26,21 @@ setInterval(() => {
 /* Get geo location based on ip address */
 const getLocation = useFetch(GEO_IP_LOOKUP_API_URL, { skip: true });
 await getLocation.fetch();
-location.value = `${getLocation.response.value.city}, ${getLocation.response.value.region}`;
+store.state.location = `${getLocation.response.value.city}+${getLocation.response.value.region}`;
 
 /* Constructs a new key anytime location or current hour changes */
 const key = computed(() => {
-  return `${currentHour.value} ${location.value}`;
+  return `${currentHour.value}_${store.state.location}`;
 });
 
 /* Get weather initially based on geo location */
-// NOT WORKING - why?
-const getWeather = useFetchCache(
-  key.value,
-  WEATHER_DBI_API_URL + location.value
-);
-await getWeather.fetch();
-console.log("get weather", { ...getWeather.response.value });
-console.log({
-  ...getWeather.response.value.currentConditions,
+const getWeather = useFetch(WEATHER_DBI_API_URL, {
+  key: key.value,
+  skip: true,
 });
-// console.log({ ...getWeather.response.value.next_days });
+await getWeather.fetch();
+store.state.todaysForecast = getWeather.response.value.todaysForecast;
+store.state.weekForecast = getWeather.response.value.next_week;
 
 /**
  * Built-in Vue function that captures any errors that occured in async functions, sets the error flag to true, and sets our error message to display in the UI. Also console errors the error.
@@ -54,7 +48,7 @@ console.log({
 onErrorCaptured((e) => {
   console.error(e);
   error.value = e;
-  //errorCaptured.value = true;
+  errorCaptured.value = true;
 });
 
 /**
@@ -62,33 +56,36 @@ onErrorCaptured((e) => {
  */
 const clearError = () => {
   error.value = null;
-  //errorCaptured.value = false;
+  errorCaptured.value = false;
 };
 </script>
 
 <template>
-  <header>
-    <h1>Current Local Forecast</h1>
-    <p>Developed by Ryan Roga</p>
-  </header>
-  <main>
-    <ChangeLocation />
-    <Suspense>
-      <!-- nested async dependencies -->
-      <template #default>
-        <div class="weather-wrapper">
-          <TodaysForecast :conditions="conditions" />
-          <WeekForecast :forecast="forecast" />
-        </div>
-      </template>
-      <!-- fallback/loading state -->
-      <template #fallback>
-        <Loading />
-      </template>
-    </Suspense>
-    <!-- Display Error on errorCaptured flag -->
-    <div class="error" v-if="errorCaptured">{{ error }}</div>
-  </main>
+  <div>
+    <header>
+      <h1>Current Local Forecast</h1>
+      <p>Developed by Ryan Roga</p>
+    </header>
+
+    <main>
+      <ChangeLocation />
+      <Suspense>
+        <!-- nested async dependencies -->
+        <template #default>
+          <div class="weather-wrapper">
+            <TodaysForecast />
+            <WeekForecast />
+          </div>
+        </template>
+        <!-- fallback/loading state -->
+        <template #fallback>
+          <Loading />
+        </template>
+      </Suspense>
+      <!-- Display Error on errorCaptured flag -->
+      <div class="error" v-if="errorCaptured">{{ error }}</div>
+    </main>
+  </div>
 </template>
 
 <style>
