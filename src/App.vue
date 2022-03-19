@@ -14,7 +14,10 @@ const WEATHER_DBI_API_URL = "https://weatherdbi.herokuapp.com/data/weather/";
 const error = ref(null);
 const errorCaptured = ref(false);
 
-/* Current Hour Ticker */
+/**
+ * If we tick over to the next hour, we need to update the weather data.
+ * Weather data is updated every hour on the hour.
+ */
 const currentHour = ref(Math.floor(new Date().getTime() / 3600000));
 setInterval(() => {
   const expected = Math.floor(new Date().getTime() / 3600000);
@@ -83,7 +86,10 @@ const clearError = () => {
         </template>
       </Suspense>
       <!-- Display Error on errorCaptured flag -->
-      <div class="error" v-if="errorCaptured">{{ error }}</div>
+      <div class="error" v-if="errorCaptured">
+        <div>{{ error }}</div>
+        <button type="button" @click="clearError">Clear</button>
+      </div>
     </main>
   </div>
 </template>
