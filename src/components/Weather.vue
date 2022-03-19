@@ -5,12 +5,17 @@ import ChangeLocation from "./ChangeLocation.vue";
 import Loading from "./Loading.vue";
 
 import { ref, computed } from "vue";
-import { useFetch } from "../utils/useFetch";
-import { useSlug } from "../utils/useSlug";
 import { store } from "../store";
+import { fetchGeo } from "../utils/fetchGeo";
+import { fetchWeather } from "../utils/fetchWeather";
 
-const GEO_IP_LOOKUP_API_URL = "https://json.geoiplookup.io/";
-const WEATHER_DBI_API_URL = "https://weatherdbi.herokuapp.com/data/weather/";
+await fetchGeo();
+await fetchWeather();
+
+/* Constructs a new key anytime location or current hour changes */
+const key = computed(() => {
+  return `${currentHour.value}_${store.state.locationSlug}`;
+});
 
 /**
  * If we tick over to the next hour, we need to update the weather data.
@@ -21,37 +26,14 @@ setInterval(() => {
   const expected = Math.floor(new Date().getTime() / 3600000);
   if (currentHour.value !== expected) {
     currentHour.value = expected;
+    fetchWeather({ key: key.value, location: location.value });
   }
 }, 1000);
-
-/* Get geo location based on ip address */
-console.log("Fetching location data...");
-const getLocation = useFetch(GEO_IP_LOOKUP_API_URL, { skip: true });
-await getLocation.fetch();
-store.state.location = `${getLocation.response.value.city}, ${getLocation.response.value.region}`;
-const getSlug = useSlug(store.state.location);
-store.state.locationSlug = getSlug.slug;
-
-/* Constructs a new key anytime location or current hour changes */
-const key = computed(() => {
-  return `${currentHour.value}_${store.state.locationSlug}`;
-});
-
-/* Get weather initially based on geo location */
-console.log("Fetching weather data...");
-
-const getWeather = useFetch(WEATHER_DBI_API_URL + store.state.locationSlug, {
-  skip: true,
-});
-await getWeather.fetch();
-const weather = { ...getWeather.response.value };
-
-store.state.todaysForecast = { ...weather.currentConditions };
-store.state.weekForecast = { ...weather.next_days };
 </script>
 
 <template>
   <div class="weather-wrapper">
+    <ChangeLocation />
     <h1 v-if="store.state.location">{{ store.state.location }}</h1>
     <TodaysForecast />
     <WeekForecast />
