@@ -47,8 +47,8 @@ await getWeather.fetch();
 
 const weather = { ...getWeather.response.value };
 
-store.state.todaysForecast = weather.currentConditions;
-store.state.weekForecast = weather.next_days;
+store.state.todaysForecast = { ...weather.currentConditions };
+store.state.weekForecast = { ...weather.next_days };
 
 console.log("weather", weather);
 console.log("forecast", store.state.todaysForecast);
