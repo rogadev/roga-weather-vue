@@ -9,13 +9,13 @@ import { store } from "../store";
 import { fetchGeo } from "../utils/fetchGeo";
 import { fetchWeather } from "../utils/fetchWeather";
 
-await fetchGeo();
-await fetchWeather();
-
 /* Constructs a new key anytime location or current hour changes */
 const key = computed(() => {
   return `${currentHour.value}_${store.state.locationSlug}`;
 });
+
+await fetchGeo();
+await fetchWeather();
 
 /**
  * If we tick over to the next hour, we need to update the weather data.
@@ -26,7 +26,8 @@ setInterval(() => {
   const expected = Math.floor(new Date().getTime() / 3600000);
   if (currentHour.value !== expected) {
     currentHour.value = expected;
-    fetchWeather({ key: key.value, location: location.value });
+    // Update the weather data
+    fetchWeather();
   }
 }, 1000);
 </script>

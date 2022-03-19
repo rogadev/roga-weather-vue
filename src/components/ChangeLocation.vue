@@ -1,11 +1,15 @@
 <script setup>
 import { ref } from "vue";
 import { store } from "../store";
+import { useSlug } from "../composables/useSlug";
+import { fetchWeather } from "../utils/fetchWeather";
 
 const location = ref(store.state.location);
 
-const changeLocation = () => {
-  //todo
+const changeLocation = async () => {
+  store.state.location = location.value.toString();
+  store.state.locationSlug = useSlug(location.value).slug.toString();
+  await fetchWeather();
 };
 </script>
 
@@ -26,7 +30,7 @@ const changeLocation = () => {
         @click="changeLocation"
         class="border rounded-md bg-blue-100 px-2 py-1 shadow"
       >
-        Change Location
+        Get Weather
       </button>
     </div>
   </div>

@@ -1,7 +1,10 @@
-import { ref, reactive } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
+import { store } from '../store';
 
-const fetchCache = reactive(new Map());
+const fetchCache = computed(() => {
+	return store.state.fetchCache;
+});
 
 export const useFetch = (url, config = {}) => {
 	const data = ref(null);
@@ -42,12 +45,13 @@ export const useFetch = (url, config = {}) => {
 		 * If we're not using cache, just fetch data.
 		 */
 		if (usingCache) {
-			if (fetchCache.has(key)) {
-				data.value = fetchCache.get(key);
+			if (fetchCache.value.has(key.value)) {
+				console.log('Using cached data for fetch to ' + url);
+				data.value = fetchCache.value.get(key.value);
 				loading.value = false;
 			} else {
 				await goFetch();
-				fetchCache.set(key, data.value);
+				fetchCache.value.set(key.value, data.value);
 			}
 		} else {
 			await goFetch();

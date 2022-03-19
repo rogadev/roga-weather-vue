@@ -6,5 +6,6 @@ export const store = reactive({
 		weekForecast: null,
 		location: null,
 		locationSlug: null,
+		fetchCache: new Map(),
 	},
 });

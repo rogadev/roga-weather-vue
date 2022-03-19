@@ -1,15 +1,22 @@
+import { computed } from 'vue';
+
 import { useFetch } from '../composables/useFetch';
 import { store } from '../store';
 
-const fetchWeather = async (key = null) => {
+const currentHour = Math.floor(new Date().getTime() / 3600000);
+const getKey = () => {
+	return `${currentHour}-${store.state.locationSlug}`;
+};
+
+const fetchWeather = async () => {
 	console.log('Fetching weather...');
+	console.log(getKey());
 	const WEATHER_DBI_API_URL = 'https://weatherdbi.herokuapp.com/data/weather/';
 	const goFetch = async () => {
 		store.state.loading = true;
-		const config = key ? { skip: true, key: key } : { skip: true };
 		const getWeather = useFetch(
 			WEATHER_DBI_API_URL + store.state.locationSlug,
-			config
+			{ skip: true, key: getKey() }
 		);
 		await getWeather.fetch();
 		// Update State
