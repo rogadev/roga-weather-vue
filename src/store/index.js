@@ -1,11 +1,12 @@
 import { reactive } from 'vue';
 
 export const store = reactive({
-	state: {
+	state: reactive({
 		currentConditions: null,
-		weekForecast: null,
+		forecast: null,
 		location: null,
 		locationSlug: null,
+		loading: false,
 		fetchCache: new Map(),
-	},
+	}),
 });
