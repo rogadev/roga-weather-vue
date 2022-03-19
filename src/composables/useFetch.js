@@ -46,7 +46,7 @@ export const useFetch = (url, config = {}) => {
 		 */
 		if (usingCache) {
 			if (fetchCache.value.has(key.value)) {
-				console.log('Using cached data for fetch to ' + url);
+				console.log('Used cache to fetch data.');
 				data.value = fetchCache.value.get(key.value);
 				loading.value = false;
 			} else {
