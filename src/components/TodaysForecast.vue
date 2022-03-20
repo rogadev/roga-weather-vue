@@ -2,20 +2,23 @@
 import { ref, computed } from "vue";
 
 import { store } from "../store";
+
+console.log("todays forcast", { ...store.state.weather.currentConditions });
+
+const conditions = computed(() => {
+  return store.state.weather.currentConditions;
+});
 </script>
 
 <template>
   <section>
     <h1>Today's Forecast</h1>
     <div v-if="!store.state.loading">
-      <p>{{ store.state.weather.currentConditions.comment }} today</p>
-      <p>Currently {{ store.state.weather.currentConditions.temp.c }}&deg;C</p>
-      <p>Chance of rain: {{ store.state.weather.currentConditions.precip }}</p>
-      <p>Humidity: {{ store.state.weather.currentConditions.humidity }}</p>
-      <img
-        :src="store.state.weather.currentConditions.iconURL"
-        :alt="store.state.weather.currentConditions.comment"
-      />
+      <p>{{ conditions.comment }} today</p>
+      <p>Currently {{ conditions.temp.c }}&deg;C</p>
+      <p>Chance of rain: {{ conditions.precip }}</p>
+      <p>Humidity: {{ conditions.humidity }}</p>
+      <img :src="conditions.iconURL" :alt="conditions.comment" />
     </div>
     <div v-else>Loading...</div>
   </section>

@@ -12,9 +12,8 @@ import { fetchWeather } from "../utils/fetchWeather";
 import { store } from "../store";
 
 await fetchGeo();
-const weather = reactive(await fetchWeather());
+await fetchWeather();
 
-store.state.weather = reactive(weather);
 /**
  * If we tick over to the next hour, we need to update the weather data.
  * Weather data is updated every hour on the hour.
