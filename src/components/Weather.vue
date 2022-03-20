@@ -33,7 +33,6 @@ setInterval(async () => {
 <template>
   <div class="weather-wrapper">
     <ChangeLocation />
-    <h1 v-if="store.state.location">{{ store.state.location }}</h1>
     <TodaysForecast />
     <WeekForecast />
   </div>
