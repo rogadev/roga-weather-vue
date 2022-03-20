@@ -3,14 +3,15 @@ import { ref } from 'vue';
 import { useFetch } from '../composables/useFetch';
 import { store } from '../store';
 
+import { useWeatherStore } from '../store/useWeather';
+const weather = useWeatherStore;
+
 const getKey = () => {
 	const currentHour = Math.floor(new Date().getTime() / 3600000);
 	return `${currentHour}-${store.state.locationSlug}`;
 };
 
 const fetchWeather = async () => {
-	const currentConditions = ref({});
-	const forecast = ref({});
 	const loading = ref({});
 
 	store.state.loading = true;
@@ -27,14 +28,22 @@ const fetchWeather = async () => {
 
 	// Update State
 	// TODO - decide on whether to use state or export as composable
-	store.state.currentConditions = currentConditions.value = {
-		...getWeather.data.currentConditions,
+
+	console.log('test', { ...getWeather.data.value });
+	store.state.currentConditions = {
+		...getWeather.data.value.currentConditions,
 	};
-	store.state.forecast = forecast.value = { ...getWeather.data.next_days };
+	store.state.forecast = { ...getWeather.data.value.next_days };
+	console.log('storae', store.state.currentConditions, store.state.forecast);
 	store.state.loading = loading.value = false;
 
 	// Log
 	console.log('Weather fetch complete.');
+
+	return {
+		forecast: [...getWeather.data.value.next_days],
+		currentConditions: { ...getWeather.data.value.currentConditions },
+	};
 };
 
 export { fetchWeather };

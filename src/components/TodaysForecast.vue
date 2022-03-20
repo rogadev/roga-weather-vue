@@ -1,26 +1,20 @@
 <script setup>
 import { defineProps } from "vue";
 
-defineProps({
-  currentTemp: {
-    default: "",
-  },
-  precip: {
-    default: "",
-  },
-  humidity: {
-    default: "",
-  },
-  wind: {
-    default: 0,
-  },
-  icon: {
-    default: "",
-  },
-  comment: {
-    default: "Shitty weather",
+import { store } from "../store";
+
+const props = defineProps({
+  conditions: {
+    type: Object,
+    default: () => ({}),
   },
 });
+
+console.log("Props: TodaysForecast.vue", props.conditions);
+
+setTimeout(() => {
+  console.log("Props: TodaysForecast.vue after timeout", props.conditions);
+}, 2000);
 </script>
 
 <template>

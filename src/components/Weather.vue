@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 
 import TodaysForecast from "./TodaysForecast.vue";
 import WeekForecast from "./WeekForecast.vue";
@@ -11,8 +11,10 @@ import { fetchWeather } from "../utils/fetchWeather";
 
 import { store } from "../store";
 
+const weather = ref({});
+
 await fetchGeo();
-await fetchWeather();
+weather.value = await fetchWeather();
 
 /**
  * If we tick over to the next hour, we need to update the weather data.
@@ -33,14 +35,8 @@ setInterval(async () => {
   <div class="weather-wrapper">
     <ChangeLocation />
     <h1 v-if="store.state.location">{{ store.state.location }}</h1>
-    <TodaysForecast
-      current-temp="321"
-      precip="10"
-      humidity="15"
-      wind="20"
-      icon="654"
-    />
-    <WeekForecast />
+    <TodaysForecast :conditions="weather.currentConditions" />
+    <WeekForecast :forecast="weather.forecast" />
   </div>
 </template>
 
