@@ -11,6 +11,12 @@ import Loading from "./components/Loading.vue";
       <a href="https://www.roga.dev" class="text-blue-500 font-bold"
         >Roga.dev</a
       ></small
+    ><br />
+    <a
+      class="text-blue-500 font-bold"
+      href="https://github.com/rogadev/roga-weather-vue"
+      target="blank"
+      >View repo on GitHub</a
     >
   </header>
   <main class="mx-auto w-4/5 p-2">
