@@ -11,16 +11,21 @@ const conditions = computed(() => {
 </script>
 
 <template>
-  <section>
-    <h1>Today's Forecast</h1>
+  <section class="mb-4 border rounded-md shadow-md bg-slate-50 py-3">
     <div v-if="!store.state.loading">
+      <h2 class="bold text-2xl">Today's Forecast</h2>
+      <h3 class="text-xl">{{ store.state.location }}</h3>
+      <img
+        class="mx-auto"
+        :src="conditions.iconURL"
+        :alt="conditions.comment"
+      />
       <p>{{ conditions.comment }} today</p>
       <p>Currently {{ conditions.temp.c }}&deg;C</p>
       <p>Chance of rain: {{ conditions.precip }}</p>
       <p>Humidity: {{ conditions.humidity }}</p>
-      <img :src="conditions.iconURL" :alt="conditions.comment" />
     </div>
-    <div v-else>Loading...</div>
+    <div v-else>Loading Current Conditions...</div>
   </section>
 </template>
 
