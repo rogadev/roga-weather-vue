@@ -16,6 +16,7 @@ const weather = ref({});
 await fetchGeo();
 weather.value = await fetchWeather();
 
+store.state.weather = weather.value;
 /**
  * If we tick over to the next hour, we need to update the weather data.
  * Weather data is updated every hour on the hour.
@@ -35,8 +36,8 @@ setInterval(async () => {
   <div class="weather-wrapper">
     <ChangeLocation />
     <h1 v-if="store.state.location">{{ store.state.location }}</h1>
-    <TodaysForecast :conditions="weather.currentConditions" />
-    <WeekForecast :forecast="weather.forecast" />
+    <TodaysForecast />
+    <WeekForecast />
   </div>
 </template>
 

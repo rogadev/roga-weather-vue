@@ -1,30 +1,22 @@
 <script setup>
-import { defineProps } from "vue";
+import { reactive } from "vue";
 
 import { store } from "../store";
 
-const props = defineProps({
-  conditions: {
-    type: Object,
-    default: () => ({}),
-  },
-});
-
-console.log("Props: TodaysForecast.vue", props.conditions);
-
-setTimeout(() => {
-  console.log("Props: TodaysForecast.vue after timeout", props.conditions);
-}, 2000);
+const conditions = reactive(store.state.weather.currentConditions);
 </script>
 
 <template>
   <section>
     <h1>Today's Forecast</h1>
-    <p>{{ comment }} today</p>
-    <p>Currently {{ currentTemp }} degrees C</p>
-    <p>Chance of rain: {{ precip }}%</p>
-    <p>Humidity: {{ humidity }}%</p>
-    <img :src="icon" :alt="comment" />
+    <div v-if="!store.state.loading">
+      <p>{{ conditions.comment }} today</p>
+      <p>Currently {{ conditions.temp.c }}&deg;C</p>
+      <p>Chance of rain: {{ conditions.precip }}</p>
+      <p>Humidity: {{ conditions.humidity }}</p>
+      <img :src="conditions.iconURL" :alt="conditions.comment" />
+    </div>
+    <div v-else>Loading...</div>
   </section>
 </template>
 
