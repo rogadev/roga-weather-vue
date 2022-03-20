@@ -3,9 +3,6 @@ import { ref, reactive } from 'vue'
 import { useFetch } from '../composables/useFetch'
 import { store } from '../store'
 
-// import { useWeatherStore } from '../store/useWeather';
-// const weather = useWeatherStore;
-
 const getKey = () => {
   const currentHour = Math.floor(new Date().getTime() / 3600000)
   return `${currentHour}-${store.state.locationSlug}`
@@ -28,17 +25,10 @@ const fetchWeather = async () => {
 
   // Update State
   store.state.loading = loading.value = false
+  store.state.weather = reactive(getWeather.data.value)
 
   // Log
   console.log('Weather fetch complete.')
-
-  const weather = reactive(getWeather.data.value)
-  store.state.weather = reactive(weather)
-
-  return {
-    forecast: getWeather.data.value.next_days,
-    currentConditions: { ...getWeather.data.value.currentConditions },
-  }
 }
 
 export { fetchWeather }

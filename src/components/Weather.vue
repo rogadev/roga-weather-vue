@@ -11,6 +11,7 @@ import { fetchWeather } from "../utils/fetchWeather";
 
 import { store } from "../store";
 
+/* Fetch Data & Set Initial Weather State */
 await fetchGeo();
 await fetchWeather();
 
