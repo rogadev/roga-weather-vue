@@ -2,7 +2,9 @@ import { reactive } from 'vue';
 
 export const store = reactive({
 	state: reactive({
-		weather: null,
+		weather: {},
+		currentConditions: {},
+		forecast: [],
 		location: null,
 		locationSlug: null,
 		loading: false,

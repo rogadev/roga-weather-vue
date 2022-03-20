@@ -31,17 +31,17 @@ const fetchWeather = async () => {
 
 	console.log('test', { ...getWeather.data.value });
 	store.state.currentConditions = {
-		...getWeather.data.value.currentConditions,
+		...getWeather.data.currentConditions,
 	};
-	store.state.forecast = { ...getWeather.data.value.next_days };
-	console.log('storae', store.state.currentConditions, store.state.forecast);
+	store.state.forecast = getWeather.data.next_days;
+	console.log('storage', store.state.currentConditions, store.state.forecast);
 	store.state.loading = loading.value = false;
 
 	// Log
 	console.log('Weather fetch complete.');
 
 	return {
-		forecast: [...getWeather.data.value.next_days],
+		forecast: getWeather.data.value.next_days,
 		currentConditions: { ...getWeather.data.value.currentConditions },
 	};
 };
