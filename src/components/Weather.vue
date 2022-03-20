@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive } from "vue";
+import { ref, reactive } from "vue";
 
 import TodaysForecast from "./TodaysForecast.vue";
 import WeekForecast from "./WeekForecast.vue";
@@ -11,12 +11,10 @@ import { fetchWeather } from "../utils/fetchWeather";
 
 import { store } from "../store";
 
-const weather = ref({});
-
 await fetchGeo();
-weather.value = await fetchWeather();
+const weather = reactive(await fetchWeather());
 
-store.state.weather = weather.value;
+store.state.weather = reactive(weather);
 /**
  * If we tick over to the next hour, we need to update the weather data.
  * Weather data is updated every hour on the hour.
