@@ -3,8 +3,6 @@ import { ref, computed } from "vue";
 
 import { store } from "../store";
 
-console.log("todays forcast", { ...store.state.weather.currentConditions });
-
 const conditions = computed(() => {
   return store.state.weather.currentConditions;
 });
