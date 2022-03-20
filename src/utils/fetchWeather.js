@@ -13,6 +13,8 @@ const getKey = () => {
 
 const fetchWeather = async () => {
 	const loading = ref({});
+	store.state.currentConditions = {};
+	store.state.forecast = [];
 
 	store.state.loading = true;
 	// Log
