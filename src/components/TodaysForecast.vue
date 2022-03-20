@@ -1,20 +1,27 @@
 <script setup>
-import { reactive } from "vue";
+import { ref, computed } from "vue";
 
 import { store } from "../store";
 
-const conditions = reactive(store.state.weather.currentConditions);
+const humidity = computed(() => {
+  return store.state.weather.humidity;
+});
+
+const temp = ref(store.state.weather.temp);
 </script>
 
 <template>
   <section>
     <h1>Today's Forecast</h1>
     <div v-if="!store.state.loading">
-      <p>{{ conditions.comment }} today</p>
-      <p>Currently {{ conditions.temp.c }}&deg;C</p>
-      <p>Chance of rain: {{ conditions.precip }}</p>
-      <p>Humidity: {{ conditions.humidity }}</p>
-      <img :src="conditions.iconURL" :alt="conditions.comment" />
+      <p>{{ store.state.weather.currentConditions.comment }} today</p>
+      <p>Currently {{ temp }}&deg;C</p>
+      <p>Chance of rain: {{ store.state.weather.currentConditions.precip }}</p>
+      <p>Humidity: {{ humidity }}</p>
+      <img
+        :src="store.state.weather.currentConditions.iconURL"
+        :alt="store.state.weather.currentConditions.comment"
+      />
     </div>
     <div v-else>Loading...</div>
   </section>
