@@ -4,10 +4,10 @@ import Loading from "./components/Loading.vue";
 </script>
 
 <template>
-  <header class="mb-3">
-    <h1 class="text-4xl font-bold py-4">Current Local Forecast</h1>
+  <header class="mb-2">
+    <h1 class="text-4xl font-bold pt-4 pb-1">Current Local Forecast</h1>
     <small class="font-bold"
-      >Developed by Ryan Roga |
+      >Created by Ryan Roga |
       <a href="https://www.roga.dev" class="text-blue-500 font-bold"
         >Roga.dev</a
       ></small

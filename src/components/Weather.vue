@@ -31,13 +31,9 @@ setInterval(async () => {
 </script>
 
 <template>
-  <div class="weather-wrapper">
+  <div>
     <ChangeLocation />
     <TodaysForecast />
     <WeekForecast />
   </div>
 </template>
-
-<style scoped>
-/*  */
-</style>
