@@ -1,6 +1,6 @@
 # Roga Weather | Vue 3 + Vite + Tailwindcss
 
-This simple weather app uses open API's to get your current location via IP address, then check the weather at your location. Created as part of a lab for ITAS197 Front End Web Development. More information below.
+This simple weather app uses open API's to get your current location via IP address, then check the weather at your location. Created as part of a lab for ITAS192 Front End Web Development. More information below.
 
 ## Features
 
