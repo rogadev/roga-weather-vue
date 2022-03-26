@@ -18,6 +18,12 @@ import Loading from "./components/Loading.vue";
       target="blank"
       >View repo on GitHub</a
     >
+    <p class="text-red-600 font-bold">
+      UPDATE: March 26, 2022 - API seems to be having issues at present
+    </p>
+    <a class="text-blue-500" href="https://weatherdbi.herokuapp.com"
+      >https://weatherdbi.herokuapp.com</a
+    >
   </header>
   <main class="mx-auto w-4/5 p-2">
     <Suspense>
