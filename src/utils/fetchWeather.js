@@ -12,7 +12,8 @@ const fetchWeather = async () => {
   const loading = ref({})
 
   store.state.loading = true
-  const METAWEATHER_PROXY = 'https://metaweather-proxy.herokuapp.com/?location='
+  const METAWEATHER_PROXY =
+    'https://metaweather-proxy.herokuapp.com/weather?location='
 
   // Log
   console.log('Fetching weather...')
