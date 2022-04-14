@@ -9,16 +9,22 @@ const getKey = () => {
 }
 
 const fetchWeather = async () => {
+  // Loading
   store.state.loading = true
+
   // Log
   console.log('Fetching weather...')
 
+  // update for https://www.7timer.info/bin/astro.php?ac=0&unit=metric&output=json&tzshift=0&lon=113.2&lat=23.1
   // Fetch current conditions
-  const WEATHER_DBI_API_URL = 'https://weatherdbi.herokuapp.com/data/weather/'
-  const getWeather = useFetch(WEATHER_DBI_API_URL + store.state.locationSlug, {
+  const weatherApiUrl = `https://www.7timer.info/bin/astro.php?ac=0&unit=metric&output=json&tzshift=0&`
+
+  // Prepare our getWeather using composable useFetch
+  const getWeather = useFetch(`${weatherApiUrl}${store.state.locationSlug}`, {
     skip: true,
     key: getKey(),
   })
+
   await getWeather.fetch()
 
   // Update State
