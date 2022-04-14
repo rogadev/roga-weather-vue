@@ -12,18 +12,22 @@ import Loading from "./components/Loading.vue";
         >Roga.dev</a
       ></small
     ><br />
-    <a
-      class="text-blue-500 font-bold"
-      href="https://github.com/rogadev/roga-weather-vue"
-      target="blank"
-      >View repo on GitHub</a
-    >
-    <p class="text-red-600 font-bold">
-      UPDATE: March 26, 2022 - API seems to be having issues at present
+    <p class="text-slate-800">
+      View the repo on
+      <a
+        class="font-bold text-blue-500"
+        href="https://github.com/rogadev/roga-weather-vue"
+        target="blank"
+        >GitHub</a
+      >
     </p>
-    <a class="text-blue-500" href="https://weatherdbi.herokuapp.com"
-      >https://weatherdbi.herokuapp.com</a
-    >
+
+    <p class="text-slate-800">
+      This project uses
+      <a class="font-bold text-blue-500" href="https://weatherdbi.herokuapp.com"
+        >Weather DBI</a
+      >
+    </p>
   </header>
   <main class="mx-auto w-4/5 p-2">
     <Suspense>
