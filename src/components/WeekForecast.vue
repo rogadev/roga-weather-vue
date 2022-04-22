@@ -17,11 +17,13 @@ const forecast = computed(() => {
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 px-6"
     >
       <div
-        v-for="(weather, _, index) of forecast"
+        v-for="(weather, index, _) in forecast"
         :key="index"
         class="mx-auto rounded-md mb-4 p-3"
       >
-        <h3>{{ weather.day }}</h3>
+        <h3 v-if="index === 0">Today</h3>
+        <h3 v-else-if="index === 1">Tomorrow</h3>
+        <h3 v-else>{{ weather.day }}</h3>
         <h4>{{ weather.comment }}</h4>
         <h4>
           {{ weather.min_temp.c }}&deg;C to {{ weather.max_temp.c }}&deg;C

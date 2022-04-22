@@ -5,36 +5,38 @@ import Loading from "./components/Loading.vue";
 
 <template>
   <header class="mt-9 mb-6 font-bold">
-    <h1 class="text-5xl mb-4">Current Local Forecast</h1>
-    <small
-      >Created by
-      <a
-        href="https://www.roga.dev"
-        class="text-blue-500 font-bold"
-        target="blank"
-        >Ryan Roga</a
-      ></small
-    >
-    |
-    <small>
-      View the repo on
-      <a
-        class="font-bold text-blue-500"
-        href="https://github.com/rogadev/roga-weather-vue"
-        target="blank"
-        >GitHub</a
+    <h1 class="text-4xl md:text-5xl mb-4">Current Local Forecast</h1>
+    <div class="text-xl md:text-base">
+      <small
+        ><span class="hidden md:inline-block">Created by&nbsp;</span
+        ><a
+          href="https://www.roga.dev"
+          class="text-blue-500 font-bold"
+          target="blank"
+          >Ryan Roga</a
+        ></small
       >
-    </small>
-    |
-    <small>
-      This project uses the
-      <a
-        class="font-bold text-blue-500"
-        href="https://weatherdbi.herokuapp.com"
-        target="blank"
-        >WeatherDB API</a
-      >
-    </small>
+      |
+      <small
+        ><span class="hidden md:inline-block">View the repo on&nbsp;</span
+        ><a
+          class="font-bold text-blue-500"
+          href="https://github.com/rogadev/roga-weather-vue"
+          target="blank"
+          >GitHub</a
+        >
+      </small>
+      |
+      <small
+        ><span class="hidden md:inline-block">This project uses the&nbsp;</span>
+        <a
+          class="font-bold text-blue-500"
+          href="https://weatherdbi.herokuapp.com"
+          target="blank"
+          >WeatherDB API</a
+        >
+      </small>
+    </div>
   </header>
   <main class="mx-auto w-4/5 p-2">
     <Suspense>
