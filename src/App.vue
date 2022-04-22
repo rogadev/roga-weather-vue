@@ -4,15 +4,19 @@ import Loading from "./components/Loading.vue";
 </script>
 
 <template>
-  <header class="mb-2">
-    <h1 class="text-4xl font-bold pt-4 pb-1">Current Local Forecast</h1>
-    <small class="font-bold"
-      >Created by Ryan Roga |
-      <a href="https://www.roga.dev" class="text-blue-500 font-bold"
-        >Roga.dev</a
+  <header class="mt-9 mb-6 font-bold">
+    <h1 class="text-5xl mb-4">Current Local Forecast</h1>
+    <small
+      >Created by
+      <a
+        href="https://www.roga.dev"
+        class="text-blue-500 font-bold"
+        target="blank"
+        >Ryan Roga</a
       ></small
-    ><br />
-    <p class="text-slate-800">
+    >
+    |
+    <small>
       View the repo on
       <a
         class="font-bold text-blue-500"
@@ -20,14 +24,17 @@ import Loading from "./components/Loading.vue";
         target="blank"
         >GitHub</a
       >
-    </p>
-
-    <p class="text-slate-800">
-      This project uses
-      <a class="font-bold text-blue-500" href="https://weatherdbi.herokuapp.com"
-        >Weather DBI</a
+    </small>
+    |
+    <small>
+      This project uses the
+      <a
+        class="font-bold text-blue-500"
+        href="https://weatherdbi.herokuapp.com"
+        target="blank"
+        >WeatherDB API</a
       >
-    </p>
+    </small>
   </header>
   <main class="mx-auto w-4/5 p-2">
     <Suspense>
