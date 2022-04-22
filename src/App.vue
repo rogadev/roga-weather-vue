@@ -48,6 +48,17 @@ import Loading from "./components/Loading.vue";
       </template>
     </Suspense>
   </main>
+  <footer>
+    <small class="pb-5"
+      >&copy; 2022 Ryan Paranich |
+      <a
+        class="text-blue-700 underline"
+        href="https://www.roga.dev"
+        target="blank"
+        >Roga.dev</a
+      ></small
+    >
+  </footer>
 </template>
 
 <style>
